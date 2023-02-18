@@ -1,6 +1,7 @@
 fastapi==0.91.0
 routes==2.5.1
 uvicorn==0.20.0
-aiohttp
+aiohttp==3.8.1
+pydash==5.1.0
 pydantic
-pydash
+Pillow

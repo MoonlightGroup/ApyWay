@@ -9,7 +9,7 @@ router = APIRouter(prefix="/json", tags=["JSON"])
 @router.get("/calendar",
 response_model=HTTPResponse,
 description="See a month calendar",
-responses=util.responses
+responses=util.responses()
 )
 async def calendar(
     year: int = Query(2023, le=3000, ge=1000, description="The year calendar"),

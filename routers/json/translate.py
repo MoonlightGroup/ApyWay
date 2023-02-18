@@ -14,7 +14,7 @@ def load_lang(idiom: str):
 @router.get("/translate",
 response_model=HTTPResponse,
 description="Translate a text using the target idiom abbreviation",
-responses=util.responses
+responses=util.responses()
 )
 async def translator(
     text: str = Query(description="The text to translate", min_length=2, max_length=2500),

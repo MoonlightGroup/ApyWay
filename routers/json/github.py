@@ -9,7 +9,7 @@ router = APIRouter(prefix="/json", tags=["JSON"])
 @router.get("/github",
 response_model=HTTPResponse,
 description="Get information about a github repository/user",
-responses=util.responses
+responses=util.responses()
 )
 async def github(
     query: str = Query(description="The repo/user to search in github", min_length=2),
