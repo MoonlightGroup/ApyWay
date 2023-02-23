@@ -1,7 +1,9 @@
 import uvicorn, json, logging
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from fastapi.exceptions import RequestValidationError, HTTPException
+from fastapi.staticfiles import StaticFiles
 from core.utils import Util
 from core.schemas import HTTPBadResponse
 
@@ -10,8 +12,8 @@ app = FastAPI(
     debug=False,
     description="A powerful rest API written in Python with cool routes",
     version="0.0.1",
-    docs_url="/launcher",
-    redoc_url="/docs"
+    docs_url=None,
+    redoc_url=None
 )
 
 util = Util(app)
@@ -22,6 +24,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/launcher", include_in_schema=False)
+async def custom_swagger_ui_html_github():
+    return get_swagger_ui_html(
+    openapi_url=app.openapi_url,
+    title=f"{app.title} - Swagger UI",
+    # swagger_ui_dark.css raw url
+    swagger_css_url="/static/style.css"
+    )
+
+@app.get("/docs", include_in_schema=False)
+async def redoc_html():
+    return get_redoc_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - ReDoc",
+        redoc_js_url="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js",
+    )
 
 @app.exception_handler(RequestValidationError)
 async def validation_error(request, exc: RequestValidationError):

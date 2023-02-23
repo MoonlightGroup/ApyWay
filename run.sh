@@ -1,5 +1,5 @@
 # auto update requirements.tx beibi
-pip install -r requirements.txt
 pip install pipreqs
 pipreqs --force
+pip install requirements.txt
 python main.py

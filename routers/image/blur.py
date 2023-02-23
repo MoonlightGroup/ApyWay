@@ -5,10 +5,10 @@ from PIL import Image, ImageFilter
 router = APIRouter(prefix="/image", tags=["File"])
 
 @router.get("/blur",
-response_class=Response,
-status_code=200,
-description="Apply a blur filter to your own image",
-responses=util.responses(image=True)
+    response_class=Response,
+    status_code=200,
+    description="Apply a blur filter to your own image",
+    responses=util.responses(image=True)
 )
 async def blur(
     image: str = Query(description="The image URL"),
