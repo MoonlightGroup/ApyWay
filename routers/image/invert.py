@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Query, Response
 from main import util
-from PIL import Image, ImageOps 
-from fastapi.exceptions import HTTPException
-import numpy as np
+from PIL import ImageOps
 
 router = APIRouter(prefix="/image", tags=["File"])
     
@@ -12,15 +10,12 @@ router = APIRouter(prefix="/image", tags=["File"])
     description="Make an invert filter using your own image",
     responses=util.responses(image=True)
 )
-async def circle(
-        image: str = Query(description="The image url to invert"),
-        width: int | float | None = Query(None, description="The width size dimensions"),
-        height: int | float | None = Query(None, description="The height size dimensions")
+async def invert(
+    image: str = Query(description="The image url to invert"),
+    width: int | float | None = Query(None, description="The width size dimensions", ge=15, le=2048),
+    height: int | float | None = Query(None, description="The height size dimensions", ge=15, le=2048)
     ):
     image = await util.load_image(image, param="image")
     f = ImageOps.invert(image.convert('RGB'))
 
-    return Response(
-        content=util.render(f.resize((width or image.width, heigth or image.height))).getvalue(), 
-        media_type="image/png"
-    )
+    return Response(content=util.render(f.resize((width or image.width, height or image.height))).getvalue(), media_type="image/png")

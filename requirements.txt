@@ -5,3 +5,5 @@ aiohttp==3.8.1
 pydash==5.1.0
 pydantic
 Pillow
+pilmoji-fixed
+deep_translator

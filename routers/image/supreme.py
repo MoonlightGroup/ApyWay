@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Query, Response
 from main import util
 from PIL import Image, ImageDraw
-from fastapi.exceptions import HTTPException
 
 router = APIRouter(prefix="/image", tags=["File"])
     
@@ -12,7 +11,7 @@ router = APIRouter(prefix="/image", tags=["File"])
     responses=util.responses(image=True)
 )
 async def supreme(
-        text: str = Query(description="The text that will be drawn on the logo"),
+        text: str = Query(description="The text that will be drawn on the logo", max_length=50),
     ):
     font = await util.load_font("https://github.com/kukai-wallet/experimental/blob/master/HelveticaNowText-ExtBdIta.ttf?raw=true", 70)
     s = font.getsize(text)
@@ -25,7 +24,4 @@ async def supreme(
     draw.text((16, 14), f"{text[0:50]}", font=font, fill="White", align="left")
     f = Image.alpha_composite(base, base2)
 
-    return Response(
-        content=util.render(f).getvalue(), 
-        media_type="image/png"
-    )
+    return Response(content=util.render(f).getvalue(), media_type="image/png")

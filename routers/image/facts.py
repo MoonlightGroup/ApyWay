@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query, Response
 from main import util
-from PIL import Image, ImageDraw
+from PIL import Image
 import textwrap
 
 router = APIRouter(prefix="/image", tags=["File"])
@@ -23,7 +23,4 @@ async def facts(
     
     base = await util.draw_text(base, (75, 400), text, font=font, colour="black", rotation=-15)
 
-    return Response(
-        content=util.render(base).getvalue(), 
-        media_type="image/png"
-    )
+    return Response(content=util.render(base).getvalue(), media_type="image/png")

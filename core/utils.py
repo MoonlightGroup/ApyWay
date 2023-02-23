@@ -5,6 +5,7 @@ from typing import Any
 from .schemas import HTTPBadResponse, HTTPResponse
 from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw, ImageFont
+from pilmoji_fixed import AsyncPilmoji
 import importlib.util, importlib, os, aiohttp, pydash, re
 
 class ImageResponse(Response):
@@ -99,12 +100,22 @@ class Util:
         img.putalpha(mask)
         return img
 
-    async def draw_text(self, img, position, text, font=None, align='left', colour=1, stroke_fill="Black", stroke_width=0, rotation=0, anchor=None, scale=1.15, pos=(0, -2)):
+    async def draw_text_emoji(self, img, position, text, font=None, align='left', colour="Black", stroke_fill="Black", stroke_width=0, rotation=0, anchor=None, scale=1.15, pos=(0, -2)):
         x, y = position
         if font is None:
            font = ImageFont.load_default()
         a = Image.new("RGBA", img.size, (255, 255, 255, 0))
         ImageDraw.Draw(a).text((x, y), text, font=font, fill=colour, align=align, stroke_fill=stroke_fill, stroke_width=stroke_width, anchor=anchor, embedded_color=True)
+        a = a.rotate(rotation, resample=Image.BICUBIC)
+        return Image.alpha_composite(img, a)
+    
+    async def draw_text(self, img, position, text, font=None, align='left', colour=1, stroke_fill="Black", stroke_width=0, rotation=0, anchor=None, scale=1.15, pos=(0, -2)):
+        x, y = position
+        if font is None:
+            font = ImageFont.load_default()
+        a = Image.new("RGBA", img.size, (255, 255, 255, 0))
+        async with AsyncPilmoji(a) as pilmoji:
+            await pilmoji.text((x, y), text, font=font, fill=colour, align=align, stroke_fill=stroke_fill, stroke_width=stroke_width, anchor=anchor, emoji_size_factor=scale, emoji_position_offset=pos)
         a = a.rotate(rotation, resample=Image.BICUBIC)
         return Image.alpha_composite(img, a)
 

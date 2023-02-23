@@ -1,4 +1,4 @@
-import uvicorn, json, logging
+import uvicorn, json, logging, warnings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
@@ -6,6 +6,8 @@ from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.staticfiles import StaticFiles
 from core.utils import Util
 from core.schemas import HTTPBadResponse
+
+warnings.filterwarnings('ignore')
 
 app = FastAPI(
     title="APY",

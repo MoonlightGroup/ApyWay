@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Query, Response
 from main import util
 from PIL import Image, ImageDraw, ImageSequence
-#from fastapi.exceptions import HTTPException
 import io, textwrap
 
 router = APIRouter(prefix="/image", tags=["File"])
@@ -38,7 +37,4 @@ async def kowalski(
     frames[0].save(buff, save_all=True, append_images=frames[1:], disposal=2, format="GIF")
     buff.seek(0)
 
-    return Response(
-        content=buff.getvalue(), 
-        media_type="image/gif"
-    )
+    return Response(content=buff.getvalue(), media_type="image/gif")
