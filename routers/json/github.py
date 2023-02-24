@@ -7,13 +7,13 @@ from main import util
 router = APIRouter(prefix="/json", tags=["JSON"])
 
 @router.get("/github",
-response_model=HTTPResponse,
-description="Get information about a github repository/user",
-responses=util.responses()
+    response_model=HTTPResponse,
+    description="Get information about a github repository/user",
+    responses=util.responses()
 )
 async def github(
-    query: str = Query(description="The repo/user to search in github", min_length=2),
-    type: Literal["user", "User", "repo", "Repo", "USER", "REPO"] = Query("repo", description="The search type to do")
+        query: str = Query(description="The repo/user to search in github", min_length=2),
+        type: Literal["user", "User", "repo", "Repo", "USER", "REPO"] = Query("repo", description="The search type to do")
     ):
     if type.lower() == "repo":
         url = f"https://api.github.com/search/repositories?q={query}&page=1&per_page=1"

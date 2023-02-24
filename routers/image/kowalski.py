@@ -8,7 +8,7 @@ router = APIRouter(prefix="/image", tags=["File"])
 @router.get("/kowalski",
     response_class=Response,
     status_code=200,
-    description="",
+    description="Make a kowalski gif meme",
     responses=util.responses(image=True)
 )
 async def kowalski(

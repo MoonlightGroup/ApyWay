@@ -51,7 +51,7 @@ class Util:
     async def load_image(self, body: str, mode='RGBA', use ='url', param=None):
         if not body:
             if param:
-                raise HTTPException(status_code=422, detail={ "error": "Invalid image URL provided", "loc": param, "param_type": "query" })
+                raise HTTPException(status_code=422, detail={ "msg": "Invalid image URL provided", "loc": (param, "query") })
             else:
                 return None
         if use.lower() == 'url':
@@ -61,7 +61,7 @@ class Util:
                     return inp.convert(mode)
             except:
                 if param:
-                    raise HTTPException(status_code=422, detail={ "error": "Invalid image URL provided", "loc": param, "param_type": "query" })
+                    raise HTTPException(status_code=422, detail={ "msg": "Invalid image URL provided", "loc": (param, "query") })
                 else:
                     return None
         elif use.lower() == 'path':

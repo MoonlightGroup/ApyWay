@@ -12,14 +12,14 @@ def load_lang(idiom: str):
     return idiom.lower().replace("zh-cn", "zh-CN").replace("zh-tw", "zh-TW").replace("ch", "zh-CN")
 
 @router.get("/translate",
-response_model=HTTPResponse,
-description="Translate a text using the target idiom abbreviation",
-responses=util.responses()
+    response_model=HTTPResponse,
+    description="Translate a text using the target idiom abbreviation",
+    responses=util.responses()
 )
 async def translator(
-    text: str = Query(description="The text to translate", min_length=2, max_length=2500),
-    to: str = Query(description="The target idiom"),
-    _from: str = Query("auto", title="from", description="An optional source idiom abbreviation. Default is auto")
+        text: str = Query(description="The text to translate", min_length=2, max_length=2500),
+        to: str = Query(description="The target idiom"),
+        _from: str = Query("auto", title="from", description="An optional source idiom abbreviation. Default is auto")
     ):
     to = load_lang(to)
     _from = load_lang(_from)

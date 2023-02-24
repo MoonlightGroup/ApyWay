@@ -11,8 +11,8 @@ router = APIRouter(prefix="/image", tags=["File"])
     responses=util.responses(image=True)
 )
 async def blur(
-    image: str = Query(description="The image URL"),
-    amount: int | float | None = Query(5, description="The blur amount to apply to the image", ge=1, le=100)
+        image: str = Query(description="The image URL"),
+        amount: int | float | None = Query(5, description="The blur amount to apply to the image", ge=1, le=100)
     ):
     image = await util.load_image(image, param="image")
     base = Image.new("RGBA", image.size, (0, 0, 0, 0))
